@@ -46,6 +46,7 @@
             this.pb_certs.Location = new System.Drawing.Point(16, 43);
             this.pb_certs.Name = "pb_certs";
             this.pb_certs.Size = new System.Drawing.Size(358, 23);
+            this.pb_certs.Step = 20;
             this.pb_certs.TabIndex = 1;
             // 
             // Form1
