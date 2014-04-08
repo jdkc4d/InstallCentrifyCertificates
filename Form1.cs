@@ -51,14 +51,40 @@ namespace InstallCentrifyCertificates
                 //Let's install the root cert
                 if(InstallCert(RootCertPath))
                 {
-
+                    this.lbl_status.Text = "Root Certificate installation complete. Installing HQ Cert...";
+                    this.pb_certs.PerformStep();
                 }
                 else
                 {
-                    MessageBox.Show("Could not install certificate");
                     Application.Exit();
                 }
                 
+                //Now lets install the HQ cert
+                if(InstallCert(HQCertPath))
+                {
+                    this.lbl_status.Text = "HQ Proxy Certificate installation complete. Installing OFA Cert...";
+                    this.pb_certs.PerformStep();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+
+                //Install OFA Cert
+                if(InstallCert(OFACertPath))
+                {
+                    this.lbl_status.Text = "OFA Proxy Certificate installation complete. Finishing...";
+                    this.pb_certs.PerformStep();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+                //Let's finish this. 
+                this.pb_certs.PerformStep();
+                this.lbl_status.Text = "Installation Complete";
+                MessageBox.Show("Installation has completed sucessfully.");
+                Application.Exit();
             }
             else Application.Exit();
             //2. See if the certificates are already installed            
@@ -70,9 +96,9 @@ namespace InstallCentrifyCertificates
             this.lbl_status.Text = "Checking for new certificates...";
             
             //Verify the certificates are in the same folder as this exe
-            Boolean RootCertExist = File.Exists(CurrentDir + RootCertPath);
-            Boolean HQProxy = File.Exists(CurrentDir + HQCertPath);
-            Boolean OFAProxy = File.Exists(CurrentDir + OFACertPath);
+            Boolean RootCertExist = File.Exists(RootCertPath);
+            Boolean HQProxy = File.Exists(HQCertPath);
+            Boolean OFAProxy = File.Exists(OFACertPath);
             //MessageBox.Show(RootCertExist.ToString() + HQProxy.ToString() + OFAProxy.ToString());
 
             if (RootCertExist && HQProxy && OFAProxy)
@@ -98,7 +124,8 @@ namespace InstallCentrifyCertificates
                 store.Close();
             }
             catch (Exception certsEx)
-            {
+            {                
+                MessageBox.Show("Error Installing Certificate: " + certsEx.Message + " Please re-run as Administrator.");
                 return false;
             }
             return true;
