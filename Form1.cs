@@ -36,10 +36,11 @@ namespace InstallCentrifyCertificates
 
             //Verify the certificates are in the same folder as this exe
             Boolean RootCertExist = File.Exists(CurrentDir + "\\CentrifyIwaTrustRoot.cer");
+            MessageBox.Show(RootCertExist.ToString() + ": " + CurrentDir + "\\CentrifyIwaTrustRoot.cer");
             Boolean HQProxy = File.Exists(CurrentDir + "\\HQ-CENTRIFY01.cer");
-            Boolean OFAProxy = File.Exists(CurrentDir + "\\OFA-CENTRIFY02.cer");
+            //Boolean OFAProxy = File.Exists(CurrentDir + "\\OFA-CENTRIFY02.cer");
 
-            MessageBox.Show(RootCertExist.ToString() + HQProxy.ToString() + OFAProxy.ToString());
+            //MessageBox.Show(RootCertExist.ToString() + HQProxy.ToString() + OFAProxy.ToString());
 
             //2. See if the certificates are already installed
 
